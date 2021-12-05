@@ -21,14 +21,12 @@ class BingoTable
       row.each { |num| h[num] }
       h
     end
-
-    @columns = []
-    5.times { columns << Hash.new }
-    5.times do |i|
-      5.times do |j|
-        number = row_i[i][j]
-        columns[j][number] = false
-      end
+    
+    col_i = row_i.transpose
+    @columns = col_i.map do |row|
+      h = Hash.new { |h, k| h[k] = false }
+      row.each { |num| h[num] }
+      h
     end
   end
 
@@ -36,8 +34,9 @@ class BingoTable
     row_hit = rows.find{ |row| row.has_key? number }
     return false if row_hit.nil?
 
-    row_hit[number] = true
     col_hit = columns.find{ |col| col.has_key? number }
+    
+    row_hit[number] = true
     col_hit[number] = true
 
     row_hit.all? { |k, v| v == true } || col_hit.all? { |k, v| v == true } 
