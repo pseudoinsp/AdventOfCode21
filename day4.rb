@@ -5,7 +5,6 @@ def read_file
 
   tables_data = lines[2..-1].reject{ |line| line.strip.empty? }
   tables = tables_data.each_slice(5).to_a.map.with_index{|data, i| BingoTable.new(i + 1, data) }
-  puts tables.first.columns
   return drawn, tables
 end
 
@@ -65,8 +64,30 @@ def part1(input)
 end
 
 def part2(input)
- 
+  drawn, tables = input
+
+  remaining_tables = tables.to_h { |table| [table.board_number, table] }
+
+  last_drawn_number = -1
+  last_table_unmarked = -1
+
+  while remaining_tables.length > 0
+    drawn.each do |drawn_number|
+      remaining_tables.each do |table_id, table|
+        if table.has_bingo_with_number?(drawn_number)
+          if remaining_tables.length == 1
+            last_drawn_number = drawn_number
+            last_table_unmarked = table.unmarked_numbers_sum
+          end
+          remaining_tables.delete(table_id)
+        end
+      end
+    end
+  end
+
+  puts "Final score: #{last_table_unmarked * last_drawn_number}"
+
 end
 
-part1(read_file)
-# part2(read_file)
+# part1(read_file)
+part2(read_file)
