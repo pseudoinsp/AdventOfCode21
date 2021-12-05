@@ -28,16 +28,16 @@ def filter_numbers(numbers, filter_criteria)
 end
 
 def filter_numbers_by_digit(numbers, digit, filter_criteria)
-  numbers_with_1, numbers_with_0 = numbers.partition {|num| num[digit].to_i == 1 }
-  filter_criteria.call(numbers_with_1, numbers_with_0)
+  numbers_with1, numbers_with0 = numbers.partition { |num| num[digit].to_i == 1 }
+  filter_criteria.call(numbers_with1, numbers_with0)
 end
 
-def oxygen_generator_criteria(numbers_with_1, numbers_with_0)
-  numbers_with_1.length >= numbers_with_0.length ? numbers_with_1 : numbers_with_0
+def oxygen_generator_criteria(numbers_with1, numbers_with0)
+  numbers_with1.length >= numbers_with0.length ? numbers_with1 : numbers_with0
 end
 
-def co2_scrupper_criteria(numbers_with_1, numbers_with_0)
-  numbers_with_1.length >= numbers_with_0.length ? numbers_with_0 : numbers_with_1
+def co2_scrupper_criteria(numbers_with1, numbers_with0)
+  numbers_with1.length >= numbers_with0.length ? numbers_with0 : numbers_with1
 end
 
 part1(read_file)
