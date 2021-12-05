@@ -1,5 +1,5 @@
 instructions = []
-File.foreach("#{__dir__}/input.txt") { |line| instructions << line }
+File.foreach("inputs/day2.txt") { |line| instructions << line }
 
 #part 1
 position = { x: 0, y: 0 }

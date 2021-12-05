@@ -1,5 +1,5 @@
 measurements = []
-File.foreach("#{__dir__}/input.txt") { |line| measurements << line.to_i }
+File.foreach("inputs/day1.txt") { |line| measurements << line.to_i }
 
 #part1
 increases = measurements.select.with_index { |x, i| i > 0 && measurements[i] > measurements[i-1]}.count
