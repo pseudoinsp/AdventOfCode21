@@ -23,7 +23,25 @@ def part1(input)
   puts "There are #{input.length} fishes after 80 days"
 end
 
+def simulate_day_better(timer_frequencies)
+  result = Hash.new(0)
+
+  timer_frequencies.each do |timer, freq|
+    if timer > 0
+      result[timer - 1] += freq
+    else
+      result[6] += freq
+      result[8] += freq
+    end
+  end
+
+  result
+end
+
 def part2(input)
+  timer_frequencies = input.tally
+  256.times { timer_frequencies = simulate_day_better(timer_frequencies) }
+  puts "There are #{timer_frequencies.values.sum} fishes after 256 days"
 end
 
 part1(read_file)
