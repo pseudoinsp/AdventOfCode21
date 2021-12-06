@@ -24,18 +24,18 @@ def part1(input)
 end
 
 def simulate_day_better(timer_frequencies)
-  result = Hash.new(0)
+  new_timer_frequencies = Hash.new(0)
 
   timer_frequencies.each do |timer, freq|
     if timer > 0
-      result[timer - 1] += freq
+      new_timer_frequencies[timer - 1] += freq
     else
-      result[6] += freq
-      result[8] += freq
+      new_timer_frequencies[6] += freq
+      new_timer_frequencies[8] += freq
     end
   end
 
-  result
+  new_timer_frequencies
 end
 
 def part2(input)
