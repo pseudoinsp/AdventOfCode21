@@ -2,13 +2,13 @@ def read_file
   File.read('inputs/day7.txt').split(',').map(&:to_i)
 end
 
-def get_optimal_position(positions, &fuel_cost_calc)
-  min, max = positions.minmax
+def get_optimal_cost(positions, &fuel_cost_calc)
+  min_pos, max_pos = positions.minmax
 
   opt_cost = 1 << 64
 
-  (min..max).each do |poss_pos|
-    cost = positions.map { |pos| fuel_cost_calc.call(poss_pos, pos) }.sum
+  (min_pos..max_pos).each do |poss_target_pos|
+    cost = positions.map { |pos| fuel_cost_calc.call(poss_target_pos, pos) }.sum
     opt_cost = cost if cost < opt_cost
   end
 
@@ -16,15 +16,15 @@ def get_optimal_position(positions, &fuel_cost_calc)
 end
 
 def part1(input)
-  opt = get_optimal_position(input) { |possible_position, position| (possible_position - position).abs } 
-  p opt
+  p get_optimal_cost(input) { |possible_target_position, current_position| (possible_target_position - current_position).abs }
 end
   
 def part2(input)
-  opt = get_optimal_position(input) do |possible_position, position| 
-    difference = (possible_position - position).abs 
+  opt = get_optimal_cost(input) do |possible_target_position, current_position| 
+    difference = (possible_target_position - current_position).abs 
     (1..difference).sum
   end
+  
   p opt
 end
   
