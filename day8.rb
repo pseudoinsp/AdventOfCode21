@@ -91,8 +91,8 @@ def part2(input)
     letters_to_numbers = map_segments_to_numbers(signals[i]) 
     outputs[i].each do |o|
       output_array = Set[*o.chars]
-      output_number = letters_to_numbers.find{|k, v| k == output_array}[1]
-      output_digits << output_number
+      output_digit = letters_to_numbers.find{|k, v| k == output_array}[1]
+      output_digits << output_digit
     end
 
     output_number = output_digits[0]*1000 + output_digits[1] * 100 + output_digits[2] * 10 + output_digits[3]
