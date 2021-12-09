@@ -71,7 +71,7 @@ def part2(flowmap)
     end
   end
 
-  three_highest_size_basins_multiplied = basin_sizes.sort.reverse.first(3).reduce(&:*)
+  three_highest_size_basins_multiplied = basin_sizes.sort.last(3).reduce(&:*)
   p three_highest_size_basins_multiplied
 end
 
