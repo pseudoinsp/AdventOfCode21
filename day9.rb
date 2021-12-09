@@ -32,6 +32,7 @@ def part1(flowmap)
   p risk_level
 end
 
+# :(
 $basin_sum = 0
 def get_basin_size(field, x, y)
   visited = Set.new
@@ -70,8 +71,8 @@ def part2(flowmap)
     end
   end
 
-  three_highest_size_basins = basin_sizes.sort.reverse.first(3).reduce(&:*)
-  p three_highest_size_basins
+  three_highest_size_basins_multiplied = basin_sizes.sort.reverse.first(3).reduce(&:*)
+  p three_highest_size_basins_multiplied
 end
 
 part1(read_file)
