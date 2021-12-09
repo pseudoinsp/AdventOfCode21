@@ -62,7 +62,7 @@ def map_segments_to_numbers(entry)
 
   letters_to_numbers[get_letters(segment_numbers_to_letters, [0, 1, 2, 4, 5, 6])] = 0
   letters_to_numbers[get_letters(segment_numbers_to_letters, [2, 5])] = 1
-  letters_to_numbers[get_letters(segment_numbers_to_letters, [0, 2, 3, 4, 6])log] = 2
+  letters_to_numbers[get_letters(segment_numbers_to_letters, [0, 2, 3, 4, 6])] = 2
   letters_to_numbers[get_letters(segment_numbers_to_letters, [0, 2, 3, 5, 6])] = 3
   letters_to_numbers[get_letters(segment_numbers_to_letters, [1, 2, 3, 5])] = 4
   letters_to_numbers[get_letters(segment_numbers_to_letters, [0, 1, 3, 5, 6])] = 5
