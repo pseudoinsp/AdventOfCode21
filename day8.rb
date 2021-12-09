@@ -24,48 +24,45 @@ def map_segments_to_numbers(entry)
   
   segment_numbers_to_letters[0] = null_segment_letter.first
 
-  # 2, 5 -> later, but only 2 candidates
+  five_length_numbers = entry.filter { |s| s.length == 5 }
+  six_length_numbers = entry.filter { |s| s.length == 6 }
+
   two_and_five_candidates = two_length_entry
 
-  # 1, 3 -> later, but only 2 candidates
+  # 5 is common in all 6 length numbers from these two candidates
+  five_segment = two_and_five_candidates.find { |seg| six_length_numbers.all? { |num| num.include?(seg) } }
+  segment_numbers_to_letters[5] = five_segment
+  # 2 is the other
+  two_segment = two_and_five_candidates.find { |seg| seg != five_segment }
+  segment_numbers_to_letters[2] = two_segment
+
+  # 1, 3
   four_length_entry = entry.find {|e| e.length == 4 }.chars.to_set
   one_and_three_candidates = four_length_entry ^ two_length_entry
 
+  # 3 is common in all 5 length numbers from these two candidates
+  three_segment = one_and_three_candidates.find { |seg| five_length_numbers.all? { |num| num.include?(seg) } }
+  segment_numbers_to_letters[3] = three_segment
+  # 1 is the other
+  one_segment = one_and_three_candidates.find { |seg| seg != three_segment }
+  segment_numbers_to_letters[1] = one_segment
+
   #calculate missing digits #4 and #6
-  paired_letters = two_and_five_candidates | one_and_three_candidates | null_segment_letter
-  unpaired_letters = ('a'..'g').to_set - paired_letters
-  five_length_numbers = entry.filter { |s| s.length == 5 }
-  six_length_numbers = entry.filter { |s| s.length == 6 }
-  
+  paired_letters = segment_numbers_to_letters.values
+
   # calculate digit #4 - from the 3 numbers with six length, only one has digit 4
   possible_letters_for_4 = six_length_numbers.map { |num| num.chars.to_set - paired_letters }
   # p possible_letters_for_4
   letter_for_6 = possible_letters_for_4.find { |letters| letters.length == 1 }.first
   segment_numbers_to_letters[6] = letter_for_6
-  letter_for_4 = possible_letters_for_4.find { |letters| letters.length == 2}.find {|digit| digit != letter_for_6 }
+  letter_for_4 = possible_letters_for_4.find { |letters| letters.length == 2 }.find { |digit| digit != letter_for_6 }
   segment_numbers_to_letters[4] = letter_for_4
-
-  #1, 3
-  # 3 is from 2 candidate, which are all is 5 length numbers
-  three_segment = one_and_three_candidates.find { |seg| five_length_numbers.all? { |num| num.include?(seg) } } 
-  segment_numbers_to_letters[3] = three_segment
-  # 1 is the other
-  one_segment = one_and_three_candidates.find { |seg| seg!= three_segment }
-  segment_numbers_to_letters[1] = one_segment
-
-  # 2, 5
-  # 5 is common in all 6 length
-  five_segment = two_and_five_candidates.find { |seg| six_length_numbers.all? { |num| num.include?(seg) } } 
-  segment_numbers_to_letters[5] = five_segment
-  # 2 is the other
-  two_segment = two_and_five_candidates.find { |seg| seg!= five_segment }
-  segment_numbers_to_letters[2] = two_segment
 
   letters_to_numbers = {}
 
   letters_to_numbers[get_letters(segment_numbers_to_letters, [0, 1, 2, 4, 5, 6])] = 0
   letters_to_numbers[get_letters(segment_numbers_to_letters, [2, 5])] = 1
-  letters_to_numbers[get_letters(segment_numbers_to_letters, [0, 2, 3, 4, 6])] = 2
+  letters_to_numbers[get_letters(segment_numbers_to_letters, [0, 2, 3, 4, 6])log] = 2
   letters_to_numbers[get_letters(segment_numbers_to_letters, [0, 2, 3, 5, 6])] = 3
   letters_to_numbers[get_letters(segment_numbers_to_letters, [1, 2, 3, 5])] = 4
   letters_to_numbers[get_letters(segment_numbers_to_letters, [0, 1, 3, 5, 6])] = 5
@@ -104,4 +101,3 @@ end
 
 part1(read_file)
 part2(read_file)
-  
