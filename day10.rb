@@ -15,7 +15,6 @@ def validate_chunk(chunk)
   stack = []
 
   chunk.each_char do |cha|
-    
     if opening_parens.include? cha
       stack << cha
     elsif closing_parens.include? cha
@@ -48,8 +47,68 @@ def part1(chunks)
   p error_score
 end
 
-def part2(input)
+def get_missing_chars_for_chunk(chunk)
+  parens = {
+    ')' => '(',
+    '}' => '{',
+    ']' => '[',
+    '>' => '<' }
+
+  open_to_close = {
+    '(' => ')',
+    '{' => '}',
+    '[' => ']',
+    '<' => '>' }
+
+  opening_parens = parens.values
+  closing_parens = parens.keys
+
+  opening_parens_loc = Hash.new { |hash, key| hash[key] = [] }
+
+  chunk.each_char.with_index do |cha, i|
+    if opening_parens.include? cha
+      opening_parens_loc[cha] << i
+    elsif closing_parens.include? cha
+      paired_open = parens[cha]
+      popped = opening_parens_loc[paired_open].pop
+    end
+  end
+
+  closing_chairs_flat = {}
+  opening_parens_loc.each { |open_char, occurances| occurances.each { |occ| closing_chairs_flat[occ] = open_to_close[open_char] } } 
+  closing_chars_sorted = closing_chairs_flat.sort_by { |k, v| k }.reverse.map { |occ, close_char| close_char }.join
+  closing_chars_sorted
+end
+
+def calculate_score_from_closing_chars(chars)
+  scores = {
+    ')' => 1,
+    '}' => 3,
+    ']' => 2,
+    '>' => 4 }
+
+  score = 0
+
+  chars.each_char do |cha|
+    score *= 5
+    score += scores[cha]
+  end
+
+  score
+end
+
+def part2(chunks)
+  scores = []
+  incomplete_chunks = chunks.reject { |chunk| validate_chunk(chunk)[0] == false }
+  incomplete_chunks.each do |chunk|
+     chars = get_missing_chars_for_chunk(chunk) 
+     score = calculate_score_from_closing_chars(chars)
+     scores << score
+  end
+  
+  scores.sort!
+  p scores[scores.length / 2]
 end
 
 part1(read_file)
-# part2(read_file)
+part2(read_file)
