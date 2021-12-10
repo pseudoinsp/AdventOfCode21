@@ -13,16 +13,16 @@ def validate_chunk(chunk)
   opening_parens = parens.keys
   closing_parens = parens.values
 
-  stack = []
+  characters = []
 
   chunk.each_char do |cha|
     if opening_parens.include? cha
-      stack << cha
+      characters << cha
     elsif closing_parens.include? cha
-      match = cha == parens[stack.last]
+      match = cha == parens[characters.last]
       return [false, cha] unless match
 
-      stack.pop
+      characters.pop
     end
   end
 
