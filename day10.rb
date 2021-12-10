@@ -7,7 +7,8 @@ def validate_chunk(chunk)
     '(' => ')',
     '{' => '}',
     '[' => ']',
-    '<' => '>' }
+    '<' => '>'
+  }
 
   opening_parens = parens.keys
   closing_parens = parens.values
@@ -19,12 +20,13 @@ def validate_chunk(chunk)
       stack << cha
     elsif closing_parens.include? cha
       match = cha == parens[stack.last]
-      return [false, cha] if !match
-      stack.pop  
+      return [false, cha] unless match
+
+      stack.pop
     end
   end
 
-  return [true]
+  [true]
 end
 
 def get_score_for_illegal_char(char)
@@ -32,7 +34,8 @@ def get_score_for_illegal_char(char)
     ')' => 3,
     '}' => 1197,
     ']' => 57,
-    '>' => 25137 }
+    '>' => 25_137
+  }
 
   scores[char]
 end
@@ -41,7 +44,7 @@ def part1(chunks)
   error_score = 0
   chunks.each do |chunk|
     error = validate_chunk(chunk)
-    error_score += get_score_for_illegal_char(error[1]) if !error[0]
+    error_score += get_score_for_illegal_char(error[1]) unless error[0]
   end
 
   p error_score
@@ -52,13 +55,15 @@ def get_missing_chars_for_chunk(chunk)
     ')' => '(',
     '}' => '{',
     ']' => '[',
-    '>' => '<' }
+    '>' => '<'
+  }
 
   open_to_close = {
     '(' => ')',
     '{' => '}',
     '[' => ']',
-    '<' => '>' }
+    '<' => '>'
+  }
 
   opening_parens = parens.values
   closing_parens = parens.keys
@@ -70,42 +75,36 @@ def get_missing_chars_for_chunk(chunk)
       opening_parens_loc[cha] << i
     elsif closing_parens.include? cha
       paired_open = parens[cha]
-      popped = opening_parens_loc[paired_open].pop
+      opening_parens_loc[paired_open].pop
     end
   end
 
-  closing_chairs_flat = {}
-  opening_parens_loc.each { |open_char, occurances| occurances.each { |occ| closing_chairs_flat[occ] = open_to_close[open_char] } } 
-  closing_chars_sorted = closing_chairs_flat.sort_by { |k, v| k }.reverse.map { |occ, close_char| close_char }.join
+  locations_and_closing_chars_ = {}
+  opening_parens_loc.each { |open_char, occurances| occurances.each { |occ| locations_and_closing_chars_[occ] = open_to_close[open_char] } }
+  closing_chars_sorted = locations_and_closing_chars_.sort_by { |k, _v| k }.reverse.map { |_occ, close_char| close_char }.join
   closing_chars_sorted
 end
 
-def calculate_score_from_closing_chars(chars)
+def calculate_score_from_closing_chars(characters)
   scores = {
     ')' => 1,
     '}' => 3,
     ']' => 2,
-    '>' => 4 }
+    '>' => 4
+  }
 
-  score = 0
-
-  chars.each_char do |cha|
-    score *= 5
-    score += scores[cha]
-  end
-
-  score
+  characters.chars.reduce(0) { |score, cha| score * 5 + scores[cha] }
 end
 
 def part2(chunks)
   scores = []
   incomplete_chunks = chunks.reject { |chunk| validate_chunk(chunk)[0] == false }
   incomplete_chunks.each do |chunk|
-     chars = get_missing_chars_for_chunk(chunk) 
-     score = calculate_score_from_closing_chars(chars)
-     scores << score
+    chars = get_missing_chars_for_chunk(chunk)
+    score = calculate_score_from_closing_chars(chars)
+    scores << score
   end
-  
+
   scores.sort!
   p scores[scores.length / 2]
 end
