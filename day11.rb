@@ -26,16 +26,13 @@ def do_step(field)
     $total_flashes += 1
 
     dirs = [[-1, 0], [-1, -1], [0, 1], [1, -1], [1, 0], [1, 1], [0, -1], [-1, 1]]
-    x = curr_cord[0]
-    y = curr_cord[1]
-
     dirs.each do |dir|
-      next unless x + dir[0] >= 0 && x + dir[0] < field.length && y + dir[1] >= 0 && y + dir[1] < field[0].length
+      x1 = curr_cord[0] + dir[0]
+      y1 = curr_cord[1] + dir[1]
 
-      x1 = x + dir[0]
-      y1 = y + dir[1]
+      next if x1.negative? || x1 >= field.length || y1.negative? || y1 >= field[0].length
+
       field[x1][y1] += 1
-
       to_flash.add([x1, y1]) if field[x1][y1] > 9 && !flashed.include?([x1, y1])
     end
   end
