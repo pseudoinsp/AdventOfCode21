@@ -39,7 +39,6 @@ def do_step(field)
 
       to_flash.add([x1, y1]) if field[x1][y1] > 9 && !flashed.include?([x1, y1])
     end
-
   end
 
   # 3. set every flashed point to 0
