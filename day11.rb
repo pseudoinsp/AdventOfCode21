@@ -1,12 +1,11 @@
 require 'set'
 
 def read_file
-  map = []
-  File.foreach('inputs/day11.txt') { |line| map << line.strip.split('').map(&:to_i) }
-  map
+  File.foreach('inputs/day11.txt').reduce([]) { |map, line| map << line.strip.split('').map(&:to_i) }
 end
 
 $total_flashes = 0
+
 def do_step(field)
   to_flash = Set.new
   # 1. increase by 1, store if > 9
@@ -56,7 +55,7 @@ end
 
 def part2(map)
   step = 0
-  
+
   loop do
     field = do_step(map)
     step += 1
