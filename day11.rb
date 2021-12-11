@@ -18,7 +18,7 @@ def do_step(field)
 
   flashed = Set.new
   # 2. increase neighbours of flashing points by 1
-  # if they are also flashing, add them to the to_flash set
+  # if they are also flashing, add them to the to_flash set unless they already flashed
   until to_flash.empty?
     curr_cord = to_flash.first
     to_flash.delete(curr_cord)
