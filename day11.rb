@@ -56,12 +56,14 @@ end
 
 def part2(map)
   step = 0
+  
   loop do
     field = do_step(map)
     step += 1
 
     break if field.flatten.uniq.length == 1
   end
+
   p step
 end
 
