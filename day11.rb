@@ -37,16 +37,17 @@ def do_step(field)
       y1 = y + dir[1]
       field[x1][y1] += 1
 
-      if field[x1][y1] > 9 && !flashed.include?([x1, y1])
-        to_flash.add([x1, y1])
-      end
+      to_flash.add([x1, y1]) if field[x1][y1] > 9 && !flashed.include?([x1, y1])
     end
+
   end
 
   # 3. set every flashed point to 0
   flashed.each do |x, y|
     field[x][y] = 0
   end
+
+  field
 end
 
 def part1(map)
@@ -54,10 +55,16 @@ def part1(map)
   p $total_flashes
 end
 
-
 def part2(map)
+  step = 0
+  loop do
+    field = do_step(map)
+    step += 1
 
+    break if field.flatten.uniq.length == 1
+  end
+  p step
 end
 
 part1(read_file)
-# part2(read_file)
+part2(read_file)
